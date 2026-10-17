@@ -1,0 +1,19 @@
+{
+  "name": "livingdocs-demo-react",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Demo repo for LivingDocs auto-update flow",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0"
+  }
+}
