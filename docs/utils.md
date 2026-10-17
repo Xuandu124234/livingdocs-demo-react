@@ -1,9 +1,12 @@
-# Utilities
+# ## Code Entity Reference
 
-## formatDate
+The Following Code Entities Are Referenced In This Documentation:
 
-The `formatDate` function converts a `Date` object to a localized string in the form `Jan 1, 2026`.
+{{#Sources}}
+- `{{Qualified_Name}}` ({{Kind}}) - {{Signature}}
+{{/Sources}}
 
-## formatRelative
+Please Ensure The Documentation Above Accurately Reflects The Current Implementation.
+ (no source provided)
 
-The `formatRelative` function returns a human-readable string describing how long ago a date occurred (e.g. `5 minutes ago`).
+_The generator received no parsable source files._
