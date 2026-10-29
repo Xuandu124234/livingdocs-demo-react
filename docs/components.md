@@ -1,17 +1,12 @@
-# Components
+# ## Code Entity Reference
 
-## StatItem
+The Following Code Entities Are Referenced In This Documentation:
 
-The `StatItem` interface defines a single statistic on the dashboard. It is rendered by the `StatCard` component.
+{{#Sources}}
+- `{{Qualified_Name}}` ({{Kind}}) - {{Signature}}
+{{/Sources}}
 
-## StatCard
+Please Ensure The Documentation Above Accurately Reflects The Current Implementation.
+ (no source provided)
 
-The `StatCard` component accepts a `StatItem` and displays its label, value, and optional trend indicator.
-
-```tsx
-<StatCard label="Users" value={42} />
-```
-
-## DashboardPage
-
-The `DashboardPage` page uses a list of `StatItem` objects to render multiple `StatCard` instances in a row.
+_The generator received no parsable source files._
