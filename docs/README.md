@@ -17,3 +17,17 @@ See [components.md](./docs/components.md) for the documentation of the React com
 ## Utilities
 
 See [utils.md](./docs/utils.md) for date formatting helpers such as `formatDate` and `formatRelative`.
+
+
+# ## Code Entity Reference
+
+The Following Code Entities Are Referenced In This Documentation:
+
+{{#Sources}}
+- `{{Qualified_Name}}` ({{Kind}}) - {{Signature}}
+{{/Sources}}
+
+Please Ensure The Documentation Above Accurately Reflects The Current Implementation.
+ (no source provided)
+
+_The generator received no parsable source files._
