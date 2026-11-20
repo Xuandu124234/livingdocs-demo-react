@@ -1,33 +1,44 @@
+---
+title: livingdocs-demo-react — README
+slug: repo-livingdocs-demo-react-readme
+type: README
+status: PUBLISHED
+source: livingdocs://workspaces/43a3821d-3071-4242-add5-25c8dbe3d88e/documents/08f88338-d010-420b-8d04-eb8a95126ad7
+committed_at: 2026-11-20T18:14:05.039Z
+---
 # LivingDocs Demo React App
 
-A small demo app used to showcase the LivingDocs documentation auto-update flow.
+A small demo app used to showcase the LivingDocs documentation auto‑update flow.
 
 ## Overview
 
-This repository contains a React dashboard with statistics, built to demonstrate how LivingDocs can:
-
-- Extract code entities (interfaces, functions, components)
-- Detect when documentation drifts from the code
-- Suggest AI-generated updates and create pull requests
+This repository contains a React dashboard that demonstrates how LivingDocs can extract code entities, detect documentation drift, and suggest AI‑generated updates. The core functionality is provided by a set of utility functions for formatting dates, a reusable `StatCard` component that displays statistical data, and the main `App` component that renders the dashboard.
 
 ## Components
 
-See [components.md](./docs/components.md) for the documentation of the React components, including the `StatCard` component and the `StatItem` interface.
+The React component hierarchy includes:
+
+- **`StatCard`** – a functional component that renders a statistic label, value, and an optional trend indicator. It receives a `StatItem` prop. (See `src/components/StatCard.tsx`.)
+- **`StatItem`** – an interface defining the shape of the data passed to `StatCard`. It contains a `label` (string), a `value` (number), and an optional `trend` that can be `'up'` or `'down'`. (See `src/components/StatCard.tsx`.)
+
+The main entry point is the **`App`** component, which renders a header and the `DashboardPage` component inside the main section. (See `src/App.tsx`.)
 
 ## Utilities
 
-See [utils.md](./docs/utils.md) for date formatting helpers such as `formatDate` and `formatRelative`.
+The `src/utils/formatDate.ts` module exports two helper functions:
 
+- **`formatDate(date: Date): string`** – returns a locale‑formatted date string in the format “MMM dd, yyyy”. (Implementation uses `toLocaleDateString` with `en-US` locale.)
+- **`formatRelative(date: Date): string`** – returns a human‑readable relative time string such as “5 minutes ago” or “2 hours ago” based on the difference between the current time and the supplied `date`. (Implementation calculates the difference in minutes and formats accordingly.)
 
-# ## Code Entity Reference
+## Code Entity Reference
 
-The Following Code Entities Are Referenced In This Documentation:
+The following code entities are referenced in this documentation:
 
-{{#Sources}}
-- `{{Qualified_Name}}` ({{Kind}}) - {{Signature}}
-{{/Sources}}
+- `src/utils/formatDate.ts:formatDate` (function) – `export function formatDate(date: Date): string`
+- `src/utils/formatDate.ts:formatRelative` (function) – `export function formatRelative(date: Date): string`
+- `src/components/StatCard.tsx:StatCard` (function) – `export function StatCard({ label, value, trend }: StatItem)`
+- `src/components/StatCard.tsx:StatItem` (interface) – `export interface StatItem { label: string; value: number; trend?: 'up' | 'down'; }`
+- `src/App.tsx:App` (function) – `export function App()`
 
-Please Ensure The Documentation Above Accurately Reflects The Current Implementation.
- (no source provided)
+There are no public API endpoints or class definitions in this module. The module depends on React and TypeScript for its implementation.
 
-_The generator received no parsable source files._
