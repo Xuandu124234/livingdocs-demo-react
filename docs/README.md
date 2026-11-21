@@ -1,11 +1,3 @@
----
-title: livingdocs-demo-react — README
-slug: repo-livingdocs-demo-react-readme
-type: README
-status: PUBLISHED
-source: livingdocs://workspaces/43a3821d-3071-4242-add5-25c8dbe3d88e/documents/08f88338-d010-420b-8d04-eb8a95126ad7
-committed_at: 2026-11-20T18:14:05.039Z
----
 # LivingDocs Demo React App
 
 A small demo app used to showcase the LivingDocs documentation auto‑update flow.
@@ -41,4 +33,3 @@ The following code entities are referenced in this documentation:
 - `src/App.tsx:App` (function) – `export function App()`
 
 There are no public API endpoints or class definitions in this module. The module depends on React and TypeScript for its implementation.
-
