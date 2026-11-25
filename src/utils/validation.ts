@@ -34,6 +34,9 @@ export function validatePassword(password: string): ValidationResult {
   if (!/[0-9]/.test(password)) {
     errors.push('Password must contain a digit');
   }
+  if (!/[^A-Za-z0-9]/.test(password)) {
+    errors.push('Password must contain a special character');
+  }
   return { valid: errors.length === 0, errors };
 }
 
@@ -52,4 +55,11 @@ export function truncate(input: string, maxLength: number): string {
     return input;
   }
   return `${input.slice(0, Math.max(0, maxLength - 1))}…`;
+}
+
+/**
+ * Check whether two values are equivalent after normalisation.
+ */
+export function isEqualIgnoringCase(a: string, b: string): boolean {
+  return normaliseText(a).toLowerCase() === normaliseText(b).toLowerCase();
 }

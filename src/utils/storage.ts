@@ -34,3 +34,25 @@ export function writeJson(key: string, value: unknown): void {
 export function removeKey(key: string): void {
   window.localStorage.removeItem(key);
 }
+
+/**
+ * Remove every key of local storage.
+ */
+export function clearAll(): void {
+  try {
+    window.localStorage.clear();
+  } catch {
+    // ignore silently
+  }
+}
+
+/**
+ * Whether a key exists in local storage.
+ */
+export function hasKey(key: string): boolean {
+  try {
+    return window.localStorage.getItem(key) !== null;
+  } catch {
+    return false;
+  }
+}

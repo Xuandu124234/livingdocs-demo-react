@@ -4,10 +4,12 @@
 export class ApiClient {
   private baseUrl: string;
   private token: string | null;
+  private timeoutMs: number;
 
-  constructor(baseUrl = 'https://api.example.com', token: string | null = null) {
+  constructor(baseUrl = 'https://api.example.com', token: string | null = null, timeoutMs = 15000) {
     this.baseUrl = baseUrl.replace(/\/$/, '');
     this.token = token;
+    this.timeoutMs = timeoutMs;
   }
 
   /**
@@ -22,6 +24,7 @@ export class ApiClient {
     }
     const response = await fetch(url.toString(), {
       headers: this.buildHeaders(),
+      signal: AbortSignal.timeout(this.timeoutMs),
     });
     if (!response.ok) {
       throw new Error(`GET ${path} failed with status ${response.status}`);
@@ -37,9 +40,41 @@ export class ApiClient {
       method: 'POST',
       headers: { ...this.buildHeaders(), 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
+      signal: AbortSignal.timeout(this.timeoutMs),
     });
     if (!response.ok) {
       throw new Error(`POST ${path} failed with status ${response.status}`);
+    }
+    return (await response.json()) as T;
+  }
+
+  /**
+   * Replace the resource at the given path.
+   */
+  async put<T>(path: string, body: unknown): Promise<T> {
+    const response = await fetch(`${this.baseUrl}${path.startsWith('/') ? path : `/${path}`}`, {
+      method: 'PUT',
+      headers: { ...this.buildHeaders(), 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(this.timeoutMs),
+    });
+    if (!response.ok) {
+      throw new Error(`PUT ${path} failed with status ${response.status}`);
+    }
+    return (await response.json()) as T;
+  }
+
+  /**
+   * Delete the resource at the given path.
+   */
+  async delete<T>(path: string): Promise<T> {
+    const response = await fetch(`${this.baseUrl}${path.startsWith('/') ? path : `/${path}`}`, {
+      method: 'DELETE',
+      headers: this.buildHeaders(),
+      signal: AbortSignal.timeout(this.timeoutMs),
+    });
+    if (!response.ok) {
+      throw new Error(`DELETE ${path} failed with status ${response.status}`);
     }
     return (await response.json()) as T;
   }

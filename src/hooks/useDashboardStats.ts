@@ -1,22 +1,34 @@
 /**
  * Hook that loads dashboard statistics from the API.
  */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { apiClient } from '../services/ApiClient';
 
 export interface DashboardStats {
   activeUsers: number;
   openIssues: number;
   deploysThisWeek: number;
+  errorRate: number;
 }
 
-export function useDashboardStats(): { stats: DashboardStats | null; loading: boolean; error: Error | null } {
+export function useDashboardStats(): {
+  stats: DashboardStats | null;
+  loading: boolean;
+  error: Error | null;
+  refresh: () => void;
+} {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
+  const [nonce, setNonce] = useState<number>(0);
+
+  const refresh = useCallback(() => {
+    setNonce((value) => value + 1);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
+    setLoading(true);
     apiClient
       .get<DashboardStats>('/dashboard/stats')
       .then((data) => {
@@ -31,7 +43,7 @@ export function useDashboardStats(): { stats: DashboardStats | null; loading: bo
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [nonce]);
 
-  return { stats, loading, error };
+  return { stats, loading, error, refresh };
 }
