@@ -1,5 +1,6 @@
 import React from 'react';
 import { DashboardPage } from './pages/DashboardPage';
+import { NotificationBell } from './components/NotificationBell';
 
 /**
  * Application root component.
@@ -11,6 +12,7 @@ export function App() {
     <div className="app">
       <header className="app-header">
         <h1>LivingDocs Demo</h1>
+        <NotificationBell />
       </header>
       <main className="app-main">
         <DashboardPage />

@@ -9,9 +9,9 @@ import { StatCard, StatItem } from '../components/StatCard';
  */
 export function DashboardPage() {
   const stats: StatItem[] = [
-    { label: 'Users', value: 1242, trend: 'up' },
-    { label: 'Revenue', value: 8421, trend: 'up' },
-    { label: 'Errors', value: 3, trend: 'down' },
+    { label: 'Users', value: 1242, trend: 'up', delta: 8 },
+    { label: 'Revenue', value: 8421, trend: 'up', delta: 3, suffix: ' USD' },
+    { label: 'Errors', value: 3, trend: 'down', delta: -12 },
   ];
 
   return (
