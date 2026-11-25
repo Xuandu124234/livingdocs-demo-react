@@ -5,6 +5,7 @@
 export interface ValidationResult {
   valid: boolean;
   errors: string[];
+  warnings: string[];
 }
 
 /**
@@ -12,12 +13,15 @@ export interface ValidationResult {
  */
 export function validateEmail(email: string): ValidationResult {
   const errors: string[] = [];
+  const warnings: string[] = [];
   if (!email || email.trim().length === 0) {
     errors.push('Email must not be empty');
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     errors.push('Email is not a valid address');
+  } else if (email.length > 254) {
+    warnings.push('Email is unusually long');
   }
-  return { valid: errors.length === 0, errors };
+  return { valid: errors.length === 0, errors, warnings };
 }
 
 /**
@@ -25,6 +29,7 @@ export function validateEmail(email: string): ValidationResult {
  */
 export function validatePassword(password: string): ValidationResult {
   const errors: string[] = [];
+  const warnings: string[] = [];
   if (password.length < 8) {
     errors.push('Password must be at least 8 characters long');
   }
@@ -37,7 +42,10 @@ export function validatePassword(password: string): ValidationResult {
   if (!/[^A-Za-z0-9]/.test(password)) {
     errors.push('Password must contain a special character');
   }
-  return { valid: errors.length === 0, errors };
+  if (password.length > 64) {
+    warnings.push('Password is unusually long');
+  }
+  return { valid: errors.length === 0, errors, warnings };
 }
 
 /**

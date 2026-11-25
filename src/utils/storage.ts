@@ -56,3 +56,14 @@ export function hasKey(key: string): boolean {
     return false;
   }
 }
+
+/**
+ * The number of keys currently stored.
+ */
+export function keyCount(): number {
+  try {
+    return window.localStorage.length;
+  } catch {
+    return 0;
+  }
+}

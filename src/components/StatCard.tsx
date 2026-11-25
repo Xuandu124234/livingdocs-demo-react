@@ -13,12 +13,13 @@ export interface StatItem {
   trend?: 'up' | 'down';
   delta?: number;
   suffix?: string;
+  tooltip?: string;
 }
 
-export function StatCard({ label, value, trend, delta, suffix }: StatItem) {
+export function StatCard({ label, value, trend, delta, suffix, tooltip }: StatItem) {
   const display = suffix ? `${value}${suffix}` : String(value);
   return (
-    <div className="stat-card">
+    <div className="stat-card" title={tooltip}>
       <span className="stat-label">{label}</span>
       <span className="stat-value">{display}</span>
       {trend && <span className={`stat-trend-${trend}`} />}

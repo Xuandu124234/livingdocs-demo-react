@@ -16,3 +16,22 @@ export function useDebounce<T>(value: T, delayMs = 300): T {
 
   return debounced;
 }
+
+/**
+ * Debounce a callback so it only runs after the given delay.
+ */
+export function useDebouncedCallback<T extends (...args: never[]) => void>(
+  callback: T,
+  delayMs = 300,
+): (...args: Parameters<T>) => void {
+  const [timer, setTimer] = useState<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (timer) clearTimeout(timer);
+  }, [timer]);
+
+  return (...args: Parameters<T>) => {
+    if (timer) clearTimeout(timer);
+    setTimer(setTimeout(() => callback(...args), delayMs));
+  };
+}

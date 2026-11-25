@@ -9,6 +9,7 @@ export interface DashboardStats {
   openIssues: number;
   deploysThisWeek: number;
   errorRate: number;
+  p95LatencyMs: number;
 }
 
 export function useDashboardStats(): {

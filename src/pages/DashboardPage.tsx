@@ -12,6 +12,7 @@ export function DashboardPage() {
     { label: 'Users', value: 1242, trend: 'up', delta: 8 },
     { label: 'Revenue', value: 8421, trend: 'up', delta: 3, suffix: ' USD' },
     { label: 'Errors', value: 3, trend: 'down', delta: -12 },
+    { label: 'p95 latency', value: 240, trend: 'down', delta: -5, suffix: ' ms' },
   ];
 
   return (

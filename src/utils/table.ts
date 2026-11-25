@@ -75,3 +75,39 @@ export function totalRevenue<T extends Record<string, unknown>>(
   }, 0);
   return formatCurrency(total);
 }
+
+/**
+ * Sort the records by one of the columns, ascending or descending.
+ */
+export function sortBy<T extends Record<string, unknown>>(
+  records: T[],
+  key: string,
+  descending = false,
+): T[] {
+  return [...records].sort((a, b) => {
+    const left = String(a[key] ?? '');
+    const right = String(b[key] ?? '');
+    if (left === right) return 0;
+    const order = left > right ? 1 : -1;
+    return descending ? -order : order;
+  });
+}
+
+/**
+ * The distinct values of one column, in the order they appear.
+ */
+export function distinctValues<T extends Record<string, unknown>>(
+  records: T[],
+  key: string,
+): unknown[] {
+  const seen = new Set<unknown>();
+  const out: unknown[] = [];
+  for (const record of records) {
+    const value = record[key];
+    if (!seen.has(value)) {
+      seen.add(value);
+      out.push(value);
+    }
+  }
+  return out;
+}
