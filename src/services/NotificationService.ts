@@ -17,6 +17,7 @@ export interface Notification {
 export interface NotificationFilter {
   severity?: NotificationSeverity;
   unreadOnly?: boolean;
+  limit?: number;
 }
 
 /**
@@ -36,7 +37,17 @@ export class NotificationService {
     if (filter.unreadOnly) {
       params.unreadOnly = 'true';
     }
+    if (filter.limit) {
+      params.limit = String(filter.limit);
+    }
     return apiClient.get<Notification[]>(this.basePath, params);
+  }
+
+  /**
+   * Read one notification by its id.
+   */
+  async get(id: string): Promise<Notification> {
+    return apiClient.get<Notification>(`${this.basePath}/${id}`);
   }
 
   /**
@@ -55,6 +66,13 @@ export class NotificationService {
       {},
     );
     return result.updated;
+  }
+
+  /**
+   * Delete one notification.
+   */
+  async remove(id: string): Promise<void> {
+    await apiClient.delete<void>(`${this.basePath}/${id}`);
   }
 }
 

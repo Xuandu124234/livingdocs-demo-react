@@ -36,3 +36,10 @@ export function formatCompactCurrency(value: number, currency = 'USD'): string {
   if (abs >= 1_000) return `${symbol}${(value / 1_000).toFixed(1)}K`;
   return formatCurrency(value, currency);
 }
+
+/**
+ * Format a number with a thousands separator.
+ */
+export function formatNumber(value: number, locale = 'en-US'): string {
+  return new Intl.NumberFormat(locale).format(value);
+}

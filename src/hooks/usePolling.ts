@@ -7,6 +7,7 @@ export interface PollResult<T> {
   data: T | null;
   error: Error | null;
   polling: boolean;
+  lastUpdatedAt: Date | null;
 }
 
 /**
@@ -21,6 +22,7 @@ export function usePolling<T>(
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [polling, setPolling] = useState<boolean>(true);
+  const [lastUpdatedAt, setLastUpdatedAt] = useState<Date | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -30,6 +32,7 @@ export function usePolling<T>(
         if (!cancelled) {
           setData(result);
           setError(null);
+          setLastUpdatedAt(new Date());
         }
       } catch (err) {
         if (!cancelled) {
@@ -46,5 +49,5 @@ export function usePolling<T>(
     };
   }, [intervalMs]);
 
-  return { data, error, polling };
+  return { data, error, polling, lastUpdatedAt };
 }

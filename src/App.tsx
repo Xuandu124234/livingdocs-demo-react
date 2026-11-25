@@ -1,6 +1,7 @@
 import React from 'react';
 import { DashboardPage } from './pages/DashboardPage';
 import { NotificationBell } from './components/NotificationBell';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 /**
  * Application root component.
@@ -15,7 +16,9 @@ export function App() {
         <NotificationBell />
       </header>
       <main className="app-main">
-        <DashboardPage />
+        <ErrorBoundary>
+          <DashboardPage />
+        </ErrorBoundary>
       </main>
     </div>
   );

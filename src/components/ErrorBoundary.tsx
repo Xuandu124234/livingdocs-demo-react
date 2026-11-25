@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-/**
- * ErrorBoundary catches rendering errors of its children.
- */
 export interface ErrorBoundaryProps {
   fallback?: React.ReactNode;
   children: React.ReactNode;
 }
 
-interface ErrorBoundaryState {
+export interface ErrorBoundaryState {
   error: Error | null;
 }
 
-export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+/**
+ * ErrorBoundary catches the rendering errors of its children and shows
+ * a fallback instead of unmounting the whole tree.
+ */
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { error: null };

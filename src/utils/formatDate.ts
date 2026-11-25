@@ -40,3 +40,10 @@ export function formatTime(date: Date): string {
     hour12: false,
   });
 }
+
+/**
+ * Format a date as an ISO-8601 timestamp (e.g. "2026-11-25T14:05:00Z").
+ */
+export function formatIso(date: Date): string {
+  return date.toISOString();
+}

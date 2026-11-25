@@ -1,6 +1,6 @@
-"""
-Helper that turns the dashboard API payload into a Markdown summary.
-"""
+/**
+ * Helper that turns the dashboard API payload into a Markdown summary.
+ */
 from __future__ import annotations
 
 import json
@@ -39,6 +39,15 @@ def render_markdown(summaries: list[MetricSummary]) -> str:
     for summary in summaries:
         trend = f" ({summary.trend})" if summary.trend else ""
         lines.append(f"- **{summary.label}**: {summary.value:g}{trend}")
+    return "\n".join(lines)
+
+
+def render_table(summaries: list[MetricSummary]) -> str:
+    """Render the summaries as a Markdown table."""
+    lines = ["| Metric | Value | Trend |", "| --- | --- | --- |"]
+    for summary in summaries:
+        trend = summary.trend or "—"
+        lines.append(f"| {summary.label} | {summary.value:g} | {trend} |")
     return "\n".join(lines)
 
 

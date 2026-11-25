@@ -5,11 +5,18 @@ export class ApiClient {
   private baseUrl: string;
   private token: string | null;
   private timeoutMs: number;
+  private retries: number;
 
-  constructor(baseUrl = 'https://api.example.com', token: string | null = null, timeoutMs = 15000) {
+  constructor(
+    baseUrl = 'https://api.example.com',
+    token: string | null = null,
+    timeoutMs = 15000,
+    retries = 2,
+  ) {
     this.baseUrl = baseUrl.replace(/\/$/, '');
     this.token = token;
     this.timeoutMs = timeoutMs;
+    this.retries = retries;
   }
 
   /**
@@ -22,61 +29,36 @@ export class ApiClient {
         url.searchParams.set(key, value);
       }
     }
-    const response = await fetch(url.toString(), {
-      headers: this.buildHeaders(),
-      signal: AbortSignal.timeout(this.timeoutMs),
-    });
-    if (!response.ok) {
-      throw new Error(`GET ${path} failed with status ${response.status}`);
-    }
-    return (await response.json()) as T;
+    return this.request<T>(url.toString(), { method: 'GET' });
   }
 
   /**
    * Send a JSON payload to the given path.
    */
   async post<T>(path: string, body: unknown): Promise<T> {
-    const response = await fetch(`${this.baseUrl}${path.startsWith('/') ? path : `/${path}`}`, {
+    return this.request<T>(this.url(path), {
       method: 'POST',
-      headers: { ...this.buildHeaders(), 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-      signal: AbortSignal.timeout(this.timeoutMs),
     });
-    if (!response.ok) {
-      throw new Error(`POST ${path} failed with status ${response.status}`);
-    }
-    return (await response.json()) as T;
   }
 
   /**
    * Replace the resource at the given path.
    */
   async put<T>(path: string, body: unknown): Promise<T> {
-    const response = await fetch(`${this.baseUrl}${path.startsWith('/') ? path : `/${path}`}`, {
+    return this.request<T>(this.url(path), {
       method: 'PUT',
-      headers: { ...this.buildHeaders(), 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-      signal: AbortSignal.timeout(this.timeoutMs),
     });
-    if (!response.ok) {
-      throw new Error(`PUT ${path} failed with status ${response.status}`);
-    }
-    return (await response.json()) as T;
   }
 
   /**
    * Delete the resource at the given path.
    */
   async delete<T>(path: string): Promise<T> {
-    const response = await fetch(`${this.baseUrl}${path.startsWith('/') ? path : `/${path}`}`, {
-      method: 'DELETE',
-      headers: this.buildHeaders(),
-      signal: AbortSignal.timeout(this.timeoutMs),
-    });
-    if (!response.ok) {
-      throw new Error(`DELETE ${path} failed with status ${response.status}`);
-    }
-    return (await response.json()) as T;
+    return this.request<T>(this.url(path), { method: 'DELETE' });
   }
 
   /**
@@ -84,6 +66,40 @@ export class ApiClient {
    */
   increment(counter: number, by = 1): number {
     return counter + by;
+  }
+
+  private url(path: string): string {
+    return `${this.baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
+  }
+
+  /**
+   * Perform the request, retrying it a couple of times on a network
+   * failure or a 5xx response.
+   */
+  private async request<T>(url: string, init: RequestInit): Promise<T> {
+    let lastError: unknown;
+    for (let attempt = 0; attempt <= this.retries; attempt++) {
+      try {
+        const response = await fetch(url, {
+          ...init,
+          headers: { ...this.buildHeaders(), ...(init.headers ?? {}) },
+          signal: AbortSignal.timeout(this.timeoutMs),
+        });
+        if (!response.ok) {
+          if (response.status >= 500 && attempt < this.retries) {
+            continue;
+          }
+          throw new Error(`${init.method} ${url} failed with status ${response.status}`);
+        }
+        return (await response.json()) as T;
+      } catch (err) {
+        lastError = err;
+        if (attempt >= this.retries) {
+          throw err;
+        }
+      }
+    }
+    throw lastError;
   }
 
   private buildHeaders(): Record<string, string> {

@@ -20,6 +20,7 @@ export interface DashboardStats {
   openIssues: number;
   deploysThisWeek: number;
   errorRate: number;
+  p95LatencyMs: number;
 }
 
 /**
@@ -31,3 +32,8 @@ export type AlertSeverity = 'info' | 'warning' | 'critical';
  * The severity of a notification.
  */
 export type NotificationSeverity = 'info' | 'warning' | 'critical';
+
+/**
+ * The status of an incident.
+ */
+export type IncidentStatus = 'open' | 'acknowledged' | 'resolved';
